@@ -24,8 +24,6 @@ import com.github.sarxos.webcam.WebcamDevice.BufferAccess;
 import com.github.sarxos.webcam.WebcamDevice.Configurable;
 import com.github.sarxos.webcam.WebcamUpdater.DefaultDelayCalculator;
 import com.github.sarxos.webcam.WebcamUpdater.DelayCalculator;
-import com.github.sarxos.webcam.ds.buildin.WebcamDefaultDevice;
-import com.github.sarxos.webcam.ds.buildin.WebcamDefaultDriver;
 import com.github.sarxos.webcam.ds.cgt.WebcamCloseTask;
 import com.github.sarxos.webcam.ds.cgt.WebcamDisposeTask;
 import com.github.sarxos.webcam.ds.cgt.WebcamGetBufferTask;
@@ -425,8 +423,7 @@ public class Webcam {
 
 	/**
 	 * Return underlying webcam device. Depending on the driver used to discover devices, this
-	 * method can return instances of different class. By default {@link WebcamDefaultDevice} is
-	 * returned when no external driver is used.
+	 * method can return instances of different class.
 	 *
 	 * @return Underlying webcam device instance
 	 */
@@ -1042,8 +1039,9 @@ public class Webcam {
 		if (driver == null) {
 			driver = WebcamDriverUtils.findDriver(DRIVERS_LIST, DRIVERS_CLASS_LIST);
 		}
+
 		if (driver == null) {
-			driver = new WebcamDefaultDriver();
+			throw new IllegalStateException("You must set up a driver to use");
 		}
 
 		LOG.info("{} capture driver will be used", driver.getClass().getSimpleName());
